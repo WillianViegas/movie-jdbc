@@ -1,14 +1,16 @@
 package application;
 
-import java.util.Date;
-
-import model.entities.Category;
+import model.dao.DaoFactory;
+import model.dao.MovieDao;
 import model.entities.Movie;
 
 public class Program {
 
 	public static void main(String[] args) {
-		Movie movie = new Movie(1, "Batman", "A batman's movie", new Date(), new Category(1, "action"));
+		MovieDao movieDao = DaoFactory.createMovieDao();		
+		
+		System.out.println("Movie test 1#: selectById");
+		Movie movie = movieDao.selectById(2);
 		System.out.println(movie);
 
 	}
