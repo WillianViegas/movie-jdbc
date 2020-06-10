@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -73,8 +76,40 @@ public class MovieDaoJDBC implements MovieDao{
 
 	@Override
 	public List<Movie> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement(
+					"SELECT m.*, c.Name as CatName FROM movie m " 
+					+ "INNER JOIN category c "
+					+ "ON m.CategoryId = c.Id " 
+					+ "ORDER BY Name"
+					);
+			
+			rs = st.executeQuery();
+			List<Movie>list = new ArrayList<>();
+			Map<Integer, Category> map = new HashMap<>();
+			
+			while(rs.next()) {
+				Category category = map.get(rs.getInt("CategoryId"));
+				
+				if(category == null) {
+					category = instantiateCategory(rs);
+					map.put(rs.getInt("CategoryId"), category);
+				}
+				Movie movie = instantiateMovie(rs, category);
+				list.add(movie);
+			}
+			return list;
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 	
 	public Category instantiateCategory(ResultSet rs) throws SQLException {
