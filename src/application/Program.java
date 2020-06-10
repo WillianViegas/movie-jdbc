@@ -27,6 +27,12 @@ public class Program {
 		"Rambo must confront his past and unearth his ruthless combat skills to exact revenge in a final mission.",
 		new Date(), cat);
 		movieDao.insert(movie2);
+		System.out.println("Inserted! New id = " + movie2.getId());
 		
+		System.out.println("\n Movie test 4#: update");
+		movie2 = movieDao.selectById(1);
+		movie2.setDescription("A film which follows a group of female prisoners lead by Imperator Furiosa.");
+		movieDao.update(movie2);
+		System.out.println("Update completed!");
 	}
 }

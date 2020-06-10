@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,8 +66,32 @@ public class MovieDaoJDBC implements MovieDao{
 	}
 
 	@Override
-	public void update(Movie ob) {
-		// TODO Auto-generated method stub
+	public void update(Movie obj) {
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement( 
+					"UPDATE movie SET Name = ?, "
+					+ "Description = ?, "
+					+ "DateOfRelease = ?, "
+					+ "CategoryId = ? "
+					+ "WHERE Id = ?"
+					);
+			
+			st.setString(1, obj.getName());
+			st.setString(2, obj.getDescription());
+			st.setDate(3, new java.sql.Date(obj.getDateOfRelease().getTime()));
+			st.setInt(4, obj.getCategory().getId());
+			st.setInt(5, obj.getId());
+			
+			st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
