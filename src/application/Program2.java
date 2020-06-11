@@ -20,8 +20,11 @@ public class Program2 {
 		System.out.println("\nCategory test 2#: selectById");
 		Category cat = categoryDao.selectById(1);
 		System.out.println(cat);
-		
 
+		System.out.println("\nCategory test 3#: insert");
+		Category newCat = new Category(null,"Animation");
+		categoryDao.insert(newCat);
+		System.out.println("Insert completed!");
 	}
 
 }
