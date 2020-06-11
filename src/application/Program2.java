@@ -25,6 +25,13 @@ public class Program2 {
 		Category newCat = new Category(null,"Animation");
 		categoryDao.insert(newCat);
 		System.out.println("Insert completed!");
+		
+		System.out.println("\n Category test 4#: update");
+		cat = categoryDao.selectById(1);
+		cat.setName("Action");
+		categoryDao.update(cat);
+		System.out.println("Update completed!");
+		
 	}
 
 }
