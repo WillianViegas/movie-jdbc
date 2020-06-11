@@ -1,15 +1,16 @@
 package application;
 
 import java.util.List;
+import java.util.Scanner;
 
 import model.dao.CategoryDao;
 import model.dao.DaoFactory;
 import model.entities.Category;
-import model.entities.Movie;
 
 public class Program2 {
 
 	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 		CategoryDao categoryDao = DaoFactory.createCategoryDao();
 		
 		
@@ -23,15 +24,20 @@ public class Program2 {
 
 		System.out.println("\nCategory test 3#: insert");
 		Category newCat = new Category(null,"Animation");
-		categoryDao.insert(newCat);
+		//categoryDao.insert(newCat);
 		System.out.println("Insert completed!");
 		
 		System.out.println("\n Category test 4#: update");
 		cat = categoryDao.selectById(1);
 		cat.setName("Action");
-		categoryDao.update(cat);
+		//categoryDao.update(cat);
 		System.out.println("Update completed!");
 		
+		System.out.println("\n Category test 5#: delete");
+		int id = sc.nextInt();
+		categoryDao.deleteById(id);
+		System.out.println("Delete completed!");
+		sc.close();
 	}
 
 }
