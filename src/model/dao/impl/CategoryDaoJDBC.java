@@ -1,10 +1,14 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import db.DB;
+import db.DbException;
 import model.dao.CategoryDao;
 import model.entities.Category;
 
@@ -41,14 +45,36 @@ public class CategoryDaoJDBC implements CategoryDao {
 
 	@Override
 	public List<Category> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement( 
+					"SELECT * FROM category ORDER BY Name"
+					);
+			
+			rs = st.executeQuery();
+			List<Category> list = new ArrayList<>();
+			while(rs.next()) {
+				Category cat = instantiateCategory(rs);
+				list.add(cat);
+			}
+			
+			return list;
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 	
 	public Category instantiateCategory(ResultSet rs) throws SQLException {
 		Category category = new Category();
 		category.setId(rs.getInt("Id"));
-		category.setName(rs.getString("CatName"));
+		category.setName(rs.getString("Name"));
 		
 		return category;
 	}
