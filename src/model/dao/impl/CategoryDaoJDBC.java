@@ -39,8 +39,29 @@ public class CategoryDaoJDBC implements CategoryDao {
 
 	@Override
 	public Category selectById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement( 
+					"SELECT * from category WHERE Id = ?"
+					);
+			
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Category cat = instantiateCategory(rs);
+				return cat;
+			}
+			return null;
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override

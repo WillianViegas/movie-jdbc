@@ -5,6 +5,7 @@ import java.util.List;
 import model.dao.CategoryDao;
 import model.dao.DaoFactory;
 import model.entities.Category;
+import model.entities.Movie;
 
 public class Program2 {
 
@@ -15,6 +16,10 @@ public class Program2 {
 		System.out.println("Category test 1#: selectAll");
 		List<Category> list = categoryDao.selectAll();
 		list.forEach(System.out::println);
+		
+		System.out.println("\nCategory test 2#: selectById");
+		Category cat = categoryDao.selectById(1);
+		System.out.println(cat);
 		
 
 	}
